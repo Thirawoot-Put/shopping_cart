@@ -1,6 +1,7 @@
 package database
 
 import (
+	"Thirawoot/shopping_cart/internal/domain"
 	"fmt"
 	"os"
 
@@ -18,6 +19,16 @@ func Connect() *gorm.DB {
 		os.Getenv("DB_SSLMODE"),
 	)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		panic(err)
+	}
+
+	err = db.AutoMigrate(&domain.UserRole{})
+	if err != nil {
+		panic(err)
+	}
+
+	err = db.AutoMigrate(&domain.User{})
 	if err != nil {
 		panic(err)
 	}
