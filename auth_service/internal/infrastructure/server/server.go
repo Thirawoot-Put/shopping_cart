@@ -1,17 +1,30 @@
 package server
 
 import (
-	"Thirawoot/shopping_cart/internal/infrastructure/database"
 	"net/http"
+	"os"
+
+	"gorm.io/gorm"
 )
 
-func Start() {
-	database.Connect()
-	HttpListen()
+type Server struct {
+	app      *http.ServeMux
+	database *gorm.DB
 }
 
-func HttpListen() {
-	err := http.ListenAndServe(":9991", nil)
+func NewServer(db *gorm.DB) *Server {
+	netApp := http.NewServeMux()
+
+	return &Server{app: netApp, database: db}
+}
+
+func (s *Server) Start() {
+	port := os.Getenv("SERVER_PORT")
+	s.HttpListen(port)
+}
+
+func (s *Server) HttpListen(port string) {
+	err := http.ListenAndServe(":"+port, nil)
 	if err != nil {
 		panic("Failed to listen http")
 	}
