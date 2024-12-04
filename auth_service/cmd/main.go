@@ -1,7 +1,15 @@
 package main
 
-import "fmt"
+import (
+	"Thirawoot/shopping_cart/internal/infrastructure/database"
+
+	"github.com/joho/godotenv"
+)
 
 func main() {
-	fmt.Println("hello")
+	err := godotenv.Load()
+	if err != nil {
+		panic("Failed to read env file")
+	}
+	database.Connect()
 }
