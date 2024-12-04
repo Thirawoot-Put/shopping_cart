@@ -26,6 +26,6 @@ func (s *Server) Start() {
 func (s *Server) HttpListen(port string) {
 	err := http.ListenAndServe(":"+port, nil)
 	if err != nil {
-		panic("Failed to listen http")
+		panic(err)
 	}
 }
