@@ -13,7 +13,7 @@ import (
 func (s *Server) initAuthRoute(db *gorm.DB) {
 	authMux := http.NewServeMux()
 
-	rp := repositories.NewAuthRepository()
+	rp := repositories.NewAuthRepository(db)
 	sv := services.NewAuthService(rp)
 	uc := usecase.NewAuthUseCase(sv)
 	hl := handlers.NewAuthHandler(uc)
