@@ -8,23 +8,26 @@ import (
 )
 
 type Server struct {
-	app      *http.ServeMux
-	database *gorm.DB
+	mux *http.ServeMux
+	db  *gorm.DB
 }
 
 func NewServer(db *gorm.DB) *Server {
-	netApp := http.NewServeMux()
+	mux := http.NewServeMux()
 
-	return &Server{app: netApp, database: db}
+	return &Server{mux: mux, db: db}
 }
 
 func (s *Server) Start() {
 	port := os.Getenv("SERVER_PORT")
+
+	s.initAuthRoute(s.db)
+
 	s.HttpListen(port)
 }
 
 func (s *Server) HttpListen(port string) {
-	err := http.ListenAndServe(":"+port, nil)
+	err := http.ListenAndServe(":"+port, s.mux)
 	if err != nil {
 		panic(err)
 	}

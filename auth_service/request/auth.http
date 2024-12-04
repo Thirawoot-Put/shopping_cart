@@ -1,0 +1,6 @@
+# @name RegisterUser
+POST http://localhost:9991/auth/register
+accept: application/json
+content-type: application/json
+
+### END
