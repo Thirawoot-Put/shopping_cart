@@ -1,7 +1,7 @@
 package main
 
 import (
-	"Thirawoot/shopping_cart/internal/infrastructure/database"
+	"Thirawoot/shopping_cart/internal/infrastructure/server"
 
 	"github.com/joho/godotenv"
 )
@@ -11,5 +11,6 @@ func main() {
 	if err != nil {
 		panic("Failed to read env file")
 	}
-	database.Connect()
+
+	server.Start()
 }
