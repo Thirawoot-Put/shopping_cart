@@ -1,0 +1,12 @@
+services:
+  
+  db:
+    container_name: shopping_cart_user_db
+    image: postgres
+    restart: always
+    environment: 
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: shopping_cart_user
+    ports:
+      - "15432:5432"
