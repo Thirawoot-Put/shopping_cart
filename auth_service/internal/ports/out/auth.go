@@ -1,5 +1,7 @@
 package port_out
 
+import "Thirawoot/shopping_cart/internal/dto"
+
 type AuthRepository interface {
-	Create() error
+	Create(data dto.UserCreate) error
 }
