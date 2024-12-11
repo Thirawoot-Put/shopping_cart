@@ -16,7 +16,7 @@ func NewUserRoleService(r port_out.UserRoleRepository) port_in.UserRoleService {
 	return &UserRoleServiceImpl{repo: r}
 }
 
-func (s *UserRoleServiceImpl) Create(data dto.UserRoleCreate) string {
+func (s *UserRoleServiceImpl) Create(data *dto.UserRoleCreate) string {
 	newRole := domain.UserRole{Role: data.Role}
 
 	err := s.repo.Create(newRole)
