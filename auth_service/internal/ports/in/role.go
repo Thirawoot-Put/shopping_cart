@@ -1,5 +1,7 @@
 package port_in
 
+import "Thirawoot/shopping_cart/internal/dto"
+
 type UserRoleService interface {
-	Create()
+	Create(data dto.UserRoleCreate) string
 }

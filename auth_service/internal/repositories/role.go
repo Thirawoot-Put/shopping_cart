@@ -16,7 +16,6 @@ func NewUserRoleRepository(db *gorm.DB) port_out.UserRoleRepository {
 }
 
 func (r *UserRoleRepositoryImpl) Create(data domain.UserRole) error {
-	role := domain.UserRole{Role: data.Role}
-	res := r.db.Create(role)
+	res := r.db.Create(data)
 	return res.Error
 }
