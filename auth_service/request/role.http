@@ -1,0 +1,10 @@
+# @name CreateUserRole
+POST http://localhost:9991/user-role/
+accept: application/json
+content-type: application/json
+
+{
+  "Role": "superadmin"
+}
+
+### END

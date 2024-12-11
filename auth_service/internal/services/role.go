@@ -21,7 +21,8 @@ func (s *UserRoleServiceImpl) Create(data *dto.UserRoleCreate) string {
 
 	err := s.repo.Create(newRole)
 	if err != nil {
-		fmt.Errorf("Failed to create user role: %w", err)
+		err := fmt.Errorf("Failed to create user role: %w", err)
+		return err.Error()
 	}
 
 	return "Create user role success"

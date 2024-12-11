@@ -16,5 +16,4 @@ func NewAuthService(r port_out.AuthRepository) port_in.AuthService {
 
 func (s *AuthServiceImpl) Create() {
 	fmt.Println("--> hello from services")
-	s.repo.Create()
 }

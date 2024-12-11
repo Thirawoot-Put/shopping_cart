@@ -20,12 +20,18 @@ func (h *UserRoleHandler) PostUserRole(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Method is not allowed", http.StatusMethodNotAllowed)
 	}
 
-	var role dto.UserRoleCreate
+	var newRole dto.UserRoleCreate
 
-	err := json.NewDecoder(r.Body).Decode(&role)
+	err := json.NewDecoder(r.Body).Decode(&newRole)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		http.Error(w, "Invalid json body", http.StatusBadRequest)
+		return
 	}
 
-	h.usecase.CreateRole(&role)
+	res := h.usecase.CreateRole(&newRole)
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(res)
+	// fmt.Fprint(w, res)
 }

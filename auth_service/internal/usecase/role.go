@@ -15,5 +15,6 @@ func NewUserRoleUseCasee(s port_in.UserRoleService) *UserRoleUseCase {
 
 func (s *UserRoleUseCase) CreateRole(data *dto.UserRoleCreate) string {
 	res := s.service.Create(data)
+
 	return res
 }
