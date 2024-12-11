@@ -22,6 +22,7 @@ func (s *Server) Start() {
 	port := os.Getenv("SERVER_PORT")
 
 	s.initAuthRoute(s.db)
+	s.initUserRoleRoute(s.db)
 
 	s.HttpListen(port)
 }
