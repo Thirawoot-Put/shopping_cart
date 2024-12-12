@@ -27,3 +27,14 @@ func (s *UserRoleServiceImpl) Create(data *dto.UserRoleCreate) string {
 
 	return "Create user role success"
 }
+
+func (s *UserRoleServiceImpl) GetById(id uint) (*dto.UserRoleResponse, error) {
+	role, err := s.repo.GetById(id)
+	if err != nil {
+		return nil, err
+	}
+
+	res := dto.UserRoleResponse{ID: role.ID, Role: role.Role}
+
+	return &res, nil
+}

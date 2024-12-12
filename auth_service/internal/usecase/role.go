@@ -20,3 +20,12 @@ func (s *UserRoleUseCase) CreateRole(data *dto.UserRoleCreate) mapper.ResBody {
 
 	return mapper.ResBody{Code: status.Created, Message: "success", Data: res}
 }
+
+func (s *UserRoleUseCase) GetRoleById(id uint) mapper.ResBody {
+	res, err := s.service.GetById(id)
+	if err != nil {
+		return mapper.ResBody{Code: status.NotFound, Message: "error", Data: err.Error()}
+	}
+
+	return mapper.ResBody{Code: status.OK, Message: "success", Data: res}
+}

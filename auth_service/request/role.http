@@ -1,10 +1,17 @@
 # @name CreateUserRole
-POST http://localhost:9991/user-role/
+POST http://localhost:9991/user-role
 accept: application/json
 content-type: application/json
 
 {
-  "Role": "supervip3"
+  "Role": "supervip5"
 }
+
+### END
+
+# @name GetUserRole
+GET http://localhost:9991/user-role/270
+accept: application/json
+content-type: application/json
 
 ### END

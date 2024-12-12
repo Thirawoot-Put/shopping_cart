@@ -6,6 +6,8 @@ import (
 	"Thirawoot/shopping_cart/internal/usecase"
 	"encoding/json"
 	"net/http"
+	"strconv"
+	"strings"
 )
 
 type UserRoleHandler struct {
@@ -19,6 +21,7 @@ func NewUserRoleHandler(u usecase.UserRoleUseCase) *UserRoleHandler {
 func (h *UserRoleHandler) PostUserRole(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method is not allowed", status.MethodNotAllowed)
+		return
 	}
 
 	var newRole dto.UserRoleCreate
@@ -31,6 +34,31 @@ func (h *UserRoleHandler) PostUserRole(w http.ResponseWriter, r *http.Request) {
 
 	res := h.usecase.CreateRole(&newRole)
 
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(res.Code)
+	err = json.NewEncoder(w).Encode(res)
+	if err != nil {
+		http.Error(w, "Failed to encoding response", status.InternalError)
+	}
+}
+
+func (h *UserRoleHandler) GetRole(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method is not allowed", status.MethodNotAllowed)
+		return
+	}
+
+	segments := strings.Split(r.URL.Path, "/")
+	if segments[2] == "" {
+		http.Error(w, "ID is required", http.StatusBadRequest)
+	}
+
+	id, err := strconv.Atoi(segments[2])
+	if err != nil {
+		http.Error(w, "ID must be integer", http.StatusBadRequest)
+	}
+
+	res := h.usecase.GetRoleById(uint(id))
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(res.Code)
 	err = json.NewEncoder(w).Encode(res)
