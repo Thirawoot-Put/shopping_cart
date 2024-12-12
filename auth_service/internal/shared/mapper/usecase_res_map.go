@@ -1,6 +1,6 @@
-package shared
+package mapper
 
-type Response struct {
+type ResBody struct {
 	Code    int
 	Message string
 	Data    any
