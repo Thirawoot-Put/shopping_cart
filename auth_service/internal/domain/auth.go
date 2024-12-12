@@ -19,7 +19,7 @@ type User struct {
 	CreatedAt time.Time `gorm:"autoCreateTime;not null"`
 	UpdatedAt time.Time `gorm:"autoUpdateTime;not null"`
 
-	IsDelete bool `gorm:"default:false"`
+	DeletedAt bool `gorm:"default:false"`
 
 	RoleId uint `gorm:"foreignKey:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 }

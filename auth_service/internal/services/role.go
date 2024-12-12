@@ -28,8 +28,8 @@ func (s *UserRoleServiceImpl) Create(data *dto.UserRoleCreate) string {
 	return "Create user role success"
 }
 
-func (s *UserRoleServiceImpl) GetById(id uint) (*dto.UserRoleResponse, error) {
-	role, err := s.repo.GetById(id)
+func (s *UserRoleServiceImpl) FindRole(id uint) (*dto.UserRoleResponse, error) {
+	role, err := s.repo.FindRole(id)
 	if err != nil {
 		return nil, err
 	}
@@ -37,4 +37,13 @@ func (s *UserRoleServiceImpl) GetById(id uint) (*dto.UserRoleResponse, error) {
 	res := dto.UserRoleResponse{ID: role.ID, Role: role.Role}
 
 	return &res, nil
+}
+
+func (s *UserRoleServiceImpl) DeleteRole(id uint) (string, error) {
+	err := s.repo.DeleteRole(id)
+	if err != nil {
+		return "", err
+	}
+
+	return "Delete success", nil
 }

@@ -23,7 +23,7 @@ func (r *UserRoleRepositoryImpl) Create(data domain.UserRole) error {
 	return res.Error
 }
 
-func (r *UserRoleRepositoryImpl) GetById(id uint) (*domain.UserRole, error) {
+func (r *UserRoleRepositoryImpl) FindRole(id uint) (*domain.UserRole, error) {
 	var role = domain.UserRole{ID: id}
 
 	result := r.db.First(&role)
@@ -35,6 +35,13 @@ func (r *UserRoleRepositoryImpl) GetById(id uint) (*domain.UserRole, error) {
 	return &role, nil
 }
 
-func (r *UserRoleRepositoryImpl) Delete(id uint) {
+func (r *UserRoleRepositoryImpl) DeleteRole(id uint) error {
+	var role = domain.UserRole{ID: id}
 
+	res := r.db.Delete(&role)
+	if res.Error != nil {
+		return res.Error
+	}
+
+	return nil
 }

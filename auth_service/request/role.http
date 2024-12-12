@@ -10,8 +10,16 @@ content-type: application/json
 ### END
 
 # @name GetUserRole
-GET http://localhost:9991/user-role/270
+GET http://localhost:9991/user-role/27
 accept: application/json
 content-type: application/json
 
 ### END
+
+# @name DeleteUserRole
+DELETE http://localhost:9991/user-role/27
+accept: application/json
+content-type: application/json
+
+### END
+

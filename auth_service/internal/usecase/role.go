@@ -21,11 +21,25 @@ func (s *UserRoleUseCase) CreateRole(data *dto.UserRoleCreate) mapper.ResBody {
 	return mapper.ResBody{Code: status.Created, Message: "success", Data: res}
 }
 
-func (s *UserRoleUseCase) GetRoleById(id uint) mapper.ResBody {
-	res, err := s.service.GetById(id)
+func (s *UserRoleUseCase) FindRole(id uint) mapper.ResBody {
+	res, err := s.service.FindRole(id)
 	if err != nil {
 		return mapper.ResBody{Code: status.NotFound, Message: "error", Data: err.Error()}
 	}
 
 	return mapper.ResBody{Code: status.OK, Message: "success", Data: res}
+}
+
+func (s *UserRoleUseCase) DeleteRole(id uint) mapper.ResBody {
+	_, err := s.service.FindRole(id)
+	if err != nil {
+		return mapper.ResBody{Code: status.NotFound, Message: "error", Data: err.Error()}
+	}
+
+	data, err := s.service.DeleteRole(id)
+	if err != nil {
+		return mapper.ResBody{Code: status.BadRequest, Message: "error", Data: err.Error()}
+	}
+
+	return mapper.ResBody{Code: status.OK, Message: "success", Data: data}
 }

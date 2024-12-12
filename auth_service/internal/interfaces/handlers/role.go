@@ -42,7 +42,18 @@ func (h *UserRoleHandler) PostUserRole(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h *UserRoleHandler) GetRole(w http.ResponseWriter, r *http.Request) {
+func (h *UserRoleHandler) HandleRoleById(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case http.MethodGet:
+		h.getRole(w, r)
+	case http.MethodDelete:
+		h.deleteRole(w, r)
+	default:
+		http.Error(w, "Method is not allowed", status.MethodNotAllowed)
+	}
+}
+
+func (h *UserRoleHandler) getRole(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "Method is not allowed", status.MethodNotAllowed)
 		return
@@ -58,7 +69,32 @@ func (h *UserRoleHandler) GetRole(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "ID must be integer", http.StatusBadRequest)
 	}
 
-	res := h.usecase.GetRoleById(uint(id))
+	res := h.usecase.FindRole(uint(id))
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(res.Code)
+	err = json.NewEncoder(w).Encode(res)
+	if err != nil {
+		http.Error(w, "Failed to encoding response", status.InternalError)
+	}
+}
+
+func (h *UserRoleHandler) deleteRole(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodDelete {
+		http.Error(w, "Method is not allowed", status.MethodNotAllowed)
+		return
+	}
+
+	segments := strings.Split(r.URL.Path, "/")
+	if segments[2] == "" {
+		http.Error(w, "ID is required", http.StatusBadRequest)
+	}
+
+	id, err := strconv.Atoi(segments[2])
+	if err != nil {
+		http.Error(w, "ID must be integer", http.StatusBadRequest)
+	}
+
+	res := h.usecase.DeleteRole(uint(id))
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(res.Code)
 	err = json.NewEncoder(w).Encode(res)
