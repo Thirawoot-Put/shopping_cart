@@ -4,7 +4,7 @@ accept: application/json
 content-type: application/json
 
 {
-  "Role": "superadmin"
+  "Role": "supervip3"
 }
 
 ### END
