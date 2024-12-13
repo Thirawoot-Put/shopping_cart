@@ -35,6 +35,17 @@ func (r *UserRoleRepositoryImpl) FindRole(id uint) (*domain.UserRole, error) {
 	return &role, nil
 }
 
+func (r *UserRoleRepositoryImpl) FindRoles() ([]domain.UserRole, error, int64) {
+	var roles []domain.UserRole
+
+	result := r.db.Find(&roles)
+	if result.Error != nil {
+		return nil, result.Error, result.RowsAffected
+	}
+
+	return roles, nil, result.RowsAffected
+}
+
 func (r *UserRoleRepositoryImpl) DeleteRole(id uint) error {
 	var role = domain.UserRole{ID: id}
 
