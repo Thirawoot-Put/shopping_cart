@@ -18,7 +18,18 @@ func NewUserRoleHandler(u usecase.UserRoleUseCase) *UserRoleHandler {
 	return &UserRoleHandler{usecase: u}
 }
 
-func (h *UserRoleHandler) PostUserRole(w http.ResponseWriter, r *http.Request) {
+func (h *UserRoleHandler) HandleRole(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case http.MethodGet:
+		h.getRoles(w, r)
+	case http.MethodPost:
+		h.postUserRole(w, r)
+	default:
+		http.Error(w, "Method is not allowed", status.MethodNotAllowed)
+	}
+}
+
+func (h *UserRoleHandler) postUserRole(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method is not allowed", status.MethodNotAllowed)
 		return
@@ -37,6 +48,21 @@ func (h *UserRoleHandler) PostUserRole(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(res.Code)
 	err = json.NewEncoder(w).Encode(res)
+	if err != nil {
+		http.Error(w, "Failed to encoding response", status.InternalError)
+	}
+}
+
+func (h *UserRoleHandler) getRoles(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method is not allowed", status.MethodNotAllowed)
+		return
+	}
+
+	res := h.usecase.FindRoles()
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(res.Code)
+	err := json.NewEncoder(w).Encode(res)
 	if err != nil {
 		http.Error(w, "Failed to encoding response", status.InternalError)
 	}

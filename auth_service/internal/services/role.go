@@ -40,14 +40,17 @@ func (s *UserRoleServiceImpl) FindRole(id uint) (*dto.UserRoleResponse, error) {
 }
 
 func (s *UserRoleServiceImpl) FindRoles() (*[]dto.UserRoleResponse, error) {
-	roles, err, afRow := s.repo.FindRoles()
+	roles, err := s.repo.FindRoles()
 	if err != nil {
 		return nil, err
 	}
 
-	var res [afRow]dto.UserRoleResponse
+	res := make([]dto.UserRoleResponse, len(roles))
+	for idx, role := range roles {
+		res[idx] = dto.UserRoleResponse{ID: role.ID, Role: role.Role}
+	}
 
-	return nil, nil
+	return &res, nil
 }
 
 func (s *UserRoleServiceImpl) DeleteRole(id uint) (string, error) {

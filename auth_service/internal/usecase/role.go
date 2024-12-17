@@ -30,6 +30,18 @@ func (s *UserRoleUseCase) FindRole(id uint) mapper.ResBody {
 	return mapper.ResBody{Code: status.OK, Message: "success", Data: res}
 }
 
+func (s UserRoleUseCase) FindRoles() mapper.ResBody {
+	res, err := s.service.FindRoles()
+	if err != nil {
+		return mapper.ResBody{Code: status.InternalError, Message: "error", Data: err.Error()}
+	}
+	if len(*res) == 0 {
+		return mapper.ResBody{Code: status.NotFound, Message: "not found", Data: *res}
+	}
+
+	return mapper.ResBody{Code: status.OK, Message: "success", Data: *res}
+}
+
 func (s *UserRoleUseCase) DeleteRole(id uint) mapper.ResBody {
 	_, err := s.service.FindRole(id)
 	if err != nil {

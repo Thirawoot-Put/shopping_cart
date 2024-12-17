@@ -23,3 +23,9 @@ content-type: application/json
 
 ### END
 
+# @name GetUserRoles
+GET http://localhost:9991/user-role
+accept: application/json
+content-type: application/json
+
+### END

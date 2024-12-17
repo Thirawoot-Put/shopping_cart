@@ -15,6 +15,6 @@ func (s *Server) initUserRoleRoute(db *gorm.DB) {
 	uc := usecase.NewUserRoleUseCasee(sv)
 	hl := handlers.NewUserRoleHandler(*uc)
 
-	s.mux.HandleFunc("/user-role", hl.PostUserRole)
+	s.mux.HandleFunc("/user-role", hl.HandleRole)
 	s.mux.HandleFunc("/user-role/", hl.HandleRoleById)
 }
