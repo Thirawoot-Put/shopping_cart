@@ -1,7 +1,9 @@
 package port_out
 
-import "Thirawoot/shopping_cart/internal/dto"
+import (
+	"Thirawoot/shopping_cart/internal/domain"
+)
 
 type AuthRepository interface {
-	Create(data dto.UserCreate) error
+	Create(data *domain.User) (*domain.User, error)
 }
