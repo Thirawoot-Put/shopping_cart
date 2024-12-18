@@ -1,6 +1,11 @@
 # @name RegisterUser
-POST http://localhost:9991/auth/register
+POST http://localhost:9991/register/admin
 accept: application/json
 content-type: application/json
+
+{
+  "Username":"admin_naja",
+  "Password":"1234"
+}
 
 ### END

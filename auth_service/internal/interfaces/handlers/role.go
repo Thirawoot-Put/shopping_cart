@@ -25,7 +25,7 @@ func (h *UserRoleHandler) HandleRole(w http.ResponseWriter, r *http.Request) {
 	case http.MethodPost:
 		h.postUserRole(w, r)
 	default:
-		http.Error(w, "Method is not allowed", status.MethodNotAllowed)
+		http.Error(w, "Not found method", status.MethodNotAllowed)
 	}
 }
 
