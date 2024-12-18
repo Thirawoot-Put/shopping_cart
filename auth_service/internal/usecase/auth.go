@@ -16,6 +16,11 @@ func NewAuthUseCase(s port_in.AuthService) *AuthUseCase {
 }
 
 func (s *AuthUseCase) CreateAdmin(data *dto.UserCreate) mapper.ResBody {
+	foundUser, _ := s.service.FindByUsername(data.Username)
+	if foundUser != nil {
+		return mapper.ResBody{Code: status.Conflict, Message: "error", Data: "user already exist"}
+	}
+
 	id, err := s.service.CreateAdmin(data)
 	if err != nil {
 		return mapper.ResBody{Code: status.BadRequest, Message: "error", Data: err.Error()}

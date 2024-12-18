@@ -42,3 +42,16 @@ func (s *AuthServiceImpl) CreateCustomer(data dto.UserCreate) error {
 	fmt.Println("--> hello from services")
 	return nil
 }
+
+func (s *AuthServiceImpl) FindByUsername(username string) (*dto.UserResponse, error) {
+	if username == "" {
+		return nil, fmt.Errorf("username are required")
+	}
+
+	user, err := s.repo.FindByUsername(username)
+	if err != nil {
+		return nil, err
+	}
+
+	return &dto.UserResponse{ID: user.ID, Username: user.Username}, nil
+}

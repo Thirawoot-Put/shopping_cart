@@ -21,5 +21,6 @@ type User struct {
 
 	DeletedAt bool `gorm:"default:false"`
 
-	RoleId uint `gorm:"foreignKey:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	RoleId   uint     `gorm:"not null"`
+	UserRole UserRole `gorm:"foreignKey:RoleId"`
 }

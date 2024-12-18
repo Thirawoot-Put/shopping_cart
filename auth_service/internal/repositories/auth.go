@@ -24,3 +24,14 @@ func (r *AuthRepositoryImpl) Create(data *domain.User) (*domain.User, error) {
 
 	return &user, nil
 }
+
+func (r *AuthRepositoryImpl) FindByUsername(username string) (*domain.User, error) {
+	var user domain.User
+	result := r.db.Preload("UserRole").Where("username = ?", username).First(&user)
+
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return &user, nil
+}
