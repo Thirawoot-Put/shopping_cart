@@ -5,6 +5,7 @@ import (
 	"Thirawoot/shopping_cart/internal/dto"
 	port_in "Thirawoot/shopping_cart/internal/ports/in"
 	port_out "Thirawoot/shopping_cart/internal/ports/out"
+	jwtservice "Thirawoot/shopping_cart/internal/shared/jwtService"
 	"Thirawoot/shopping_cart/internal/shared/status"
 	"fmt"
 
@@ -87,5 +88,10 @@ func (s *AuthServiceImpl) AuthUsername(data *dto.UserLogin) (string, error, uint
 		return "", fmt.Errorf("password match error: %w", err), status.BadRequest
 	}
 
-	return "", nil, 12
+	tokenString, err := jwtservice.GenerateToken(user.ID, user.UserRole.Role)
+	if err != nil {
+		return "", err, status.BadRequest
+	}
+
+	return tokenString, nil, status.OK
 }
