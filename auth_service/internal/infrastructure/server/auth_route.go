@@ -17,4 +17,5 @@ func (s *Server) initAuthRoute(db *gorm.DB) {
 
 	s.mux.HandleFunc("/register/admin", hl.HandleAdmin)
 	s.mux.HandleFunc("/register", hl.HandleCustomer)
+	s.mux.HandleFunc("/login", hl.LoginUser)
 }

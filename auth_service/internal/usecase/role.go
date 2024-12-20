@@ -7,28 +7,21 @@ import (
 	"Thirawoot/shopping_cart/internal/shared/status"
 )
 
-type UserRoleUseCase interface {
-	CreateRole(data *dto.UserRoleCreate) mapper.ResBody
-	FindRole(id uint) mapper.ResBody
-	FindRoles() mapper.ResBody
-	DeleteRole(id uint) mapper.ResBody
-}
-
-type UserRoleUseCaseImpl struct {
+type UserRoleUseCase struct {
 	service port_in.UserRoleService
 }
 
-func NewUserRoleUseCasee(s port_in.UserRoleService) UserRoleUseCase {
-	return &UserRoleUseCaseImpl{service: s}
+func NewUserRoleUseCasee(s port_in.UserRoleService) *UserRoleUseCase {
+	return &UserRoleUseCase{service: s}
 }
 
-func (s *UserRoleUseCaseImpl) CreateRole(data *dto.UserRoleCreate) mapper.ResBody {
+func (s *UserRoleUseCase) CreateRole(data *dto.UserRoleCreate) mapper.ResBody {
 	res := s.service.Create(data)
 
 	return mapper.ResBody{Code: status.Created, Message: "success", Data: res}
 }
 
-func (s *UserRoleUseCaseImpl) FindRole(id uint) mapper.ResBody {
+func (s *UserRoleUseCase) FindRole(id uint) mapper.ResBody {
 	res, err := s.service.FindRole(id)
 	if err != nil {
 		return mapper.ResBody{Code: status.NotFound, Message: "error", Data: err.Error()}
@@ -37,7 +30,7 @@ func (s *UserRoleUseCaseImpl) FindRole(id uint) mapper.ResBody {
 	return mapper.ResBody{Code: status.OK, Message: "success", Data: res}
 }
 
-func (s UserRoleUseCaseImpl) FindRoles() mapper.ResBody {
+func (s UserRoleUseCase) FindRoles() mapper.ResBody {
 	res, err := s.service.FindRoles()
 	if err != nil {
 		return mapper.ResBody{Code: status.InternalError, Message: "error", Data: err.Error()}
@@ -49,7 +42,7 @@ func (s UserRoleUseCaseImpl) FindRoles() mapper.ResBody {
 	return mapper.ResBody{Code: status.OK, Message: "success", Data: *res}
 }
 
-func (s *UserRoleUseCaseImpl) DeleteRole(id uint) mapper.ResBody {
+func (s *UserRoleUseCase) DeleteRole(id uint) mapper.ResBody {
 	_, err := s.service.FindRole(id)
 	if err != nil {
 		return mapper.ResBody{Code: status.NotFound, Message: "error", Data: err.Error()}

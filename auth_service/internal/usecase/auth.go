@@ -7,20 +7,15 @@ import (
 	"Thirawoot/shopping_cart/internal/shared/status"
 )
 
-type AuthUseCase interface {
-	CreateAdmin(data *dto.UserCreate) mapper.ResBody
-	CreateCustomer(data *dto.UserCreate) mapper.ResBody
-}
-
-type AuthUseCaseImpl struct {
+type AuthUseCase struct {
 	service port_in.AuthService
 }
 
-func NewAuthUseCase(s port_in.AuthService) AuthUseCase {
-	return &AuthUseCaseImpl{service: s}
+func NewAuthUseCase(s port_in.AuthService) *AuthUseCase {
+	return &AuthUseCase{service: s}
 }
 
-func (s *AuthUseCaseImpl) CreateAdmin(data *dto.UserCreate) mapper.ResBody {
+func (s *AuthUseCase) CreateAdmin(data *dto.UserCreate) mapper.ResBody {
 	foundUser, _ := s.service.FindByUsername(data.Username)
 	if foundUser != nil {
 		return mapper.ResBody{Code: status.Conflict, Message: "error", Data: "user already exist"}
@@ -34,7 +29,7 @@ func (s *AuthUseCaseImpl) CreateAdmin(data *dto.UserCreate) mapper.ResBody {
 	return mapper.ResBody{Code: status.Created, Message: "success", Data: id}
 }
 
-func (s *AuthUseCaseImpl) CreateCustomer(data *dto.UserCreate) mapper.ResBody {
+func (s *AuthUseCase) CreateCustomer(data *dto.UserCreate) mapper.ResBody {
 	foundUser, _ := s.service.FindByUsername(data.Username)
 	if foundUser != nil {
 		return mapper.ResBody{Code: status.Conflict, Message: "error", Data: "user already exist"}
@@ -46,4 +41,13 @@ func (s *AuthUseCaseImpl) CreateCustomer(data *dto.UserCreate) mapper.ResBody {
 	}
 
 	return mapper.ResBody{Code: status.Created, Message: "success", Data: id}
+}
+
+func (s *AuthUseCase) LoginUser(data *dto.UserLogin) mapper.ResBody {
+	tokenString, err, code := s.service.AuthUsername(data)
+	if err != nil {
+		return mapper.ResBody{Code: code, Message: "error", Data: err}
+	}
+
+	return mapper.ResBody{Code: code, Message: "success", Data: tokenString}
 }

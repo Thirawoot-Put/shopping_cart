@@ -73,7 +73,7 @@ func (s *AuthServiceImpl) FindByUsername(username string) (*dto.UserResponse, er
 	return &dto.UserResponse{ID: user.ID, Username: user.Username}, nil
 }
 
-func (s *AuthServiceImpl) AuthUsername(data *dto.UserLogin) (string, error, uint) {
+func (s *AuthServiceImpl) AuthUsername(data *dto.UserLogin) (string, error, int) {
 	if data.Username == "" || data.Password == "" {
 		return "", fmt.Errorf("username and password are required"), status.BadRequest
 	}

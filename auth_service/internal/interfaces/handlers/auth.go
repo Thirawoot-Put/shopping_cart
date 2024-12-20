@@ -79,3 +79,26 @@ func (h *AuthHandler) postCustomer(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Failed to encoding response", status.InternalError)
 	}
 }
+
+func (h *AuthHandler) LoginUser(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method is not allowed", http.StatusMethodNotAllowed)
+	}
+
+	var user dto.UserLogin
+
+	err := json.NewDecoder(r.Body).Decode(&user)
+	if err != nil {
+		http.Error(w, "Invalid json body", http.StatusBadRequest)
+		return
+	}
+
+	res := h.usecase.LoginUser(&user)
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(res.Code)
+	err = json.NewEncoder(w).Encode(res)
+	if err != nil {
+		http.Error(w, "Failed to encoding response", status.InternalError)
+	}
+}

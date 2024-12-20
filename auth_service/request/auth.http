@@ -21,3 +21,15 @@ content-type: application/json
 }
 
 ### END
+
+# @name LoginUser
+POST http://localhost:9991/login
+accept: application/json
+content-type: application/json
+
+{
+  "Username":"admin_naja",
+  "Password":"1234"
+}
+
+### END
