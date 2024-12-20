@@ -38,9 +38,24 @@ func (s *AuthServiceImpl) CreateAdmin(data *dto.UserCreate) (*uint, error) {
 	return &user.ID, nil
 }
 
-func (s *AuthServiceImpl) CreateCustomer(data dto.UserCreate) error {
-	fmt.Println("--> hello from services")
-	return nil
+func (s *AuthServiceImpl) CreateCustomer(data *dto.UserCreate) (*uint, error) {
+	if data.Username == "" || data.Password == "" {
+		return nil, fmt.Errorf("username and password are required")
+	}
+
+	hash, err := bcrypt.GenerateFromPassword([]byte(data.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return nil, fmt.Errorf("Failed to generate hashpassword")
+	}
+
+	newUser := domain.User{Username: data.Username, Password: string(hash), RoleId: 17}
+
+	user, err := s.repo.Create(&newUser)
+	if err != nil {
+		return nil, fmt.Errorf("Failed to write user: %w", err)
+	}
+
+	return &user.ID, nil
 }
 
 func (s *AuthServiceImpl) FindByUsername(username string) (*dto.UserResponse, error) {

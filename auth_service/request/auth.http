@@ -4,7 +4,19 @@ accept: application/json
 content-type: application/json
 
 {
-  "Username":"admin_naja2",
+  "Username":"admin_naja4",
+  "Password":"1234"
+}
+
+### END
+
+# @name RegisterUser
+POST http://localhost:9991/register
+accept: application/json
+content-type: application/json
+
+{
+  "Username":"customer_2",
   "Password":"1234"
 }
 
