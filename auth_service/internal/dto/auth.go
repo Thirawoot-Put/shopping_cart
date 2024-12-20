@@ -10,3 +10,8 @@ type UserResponse struct {
 	Username string
 	// Role     string
 }
+
+type UserLogin struct {
+	Username string
+	Password string
+}

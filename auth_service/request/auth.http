@@ -16,7 +16,7 @@ accept: application/json
 content-type: application/json
 
 {
-  "Username":"customer_2",
+  "Username":"customer_3",
   "Password":"1234"
 }
 

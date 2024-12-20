@@ -5,6 +5,7 @@ import (
 	"Thirawoot/shopping_cart/internal/dto"
 	port_in "Thirawoot/shopping_cart/internal/ports/in"
 	port_out "Thirawoot/shopping_cart/internal/ports/out"
+	"Thirawoot/shopping_cart/internal/shared/status"
 	"fmt"
 
 	"golang.org/x/crypto/bcrypt"
@@ -69,4 +70,22 @@ func (s *AuthServiceImpl) FindByUsername(username string) (*dto.UserResponse, er
 	}
 
 	return &dto.UserResponse{ID: user.ID, Username: user.Username}, nil
+}
+
+func (s *AuthServiceImpl) AuthUsername(data *dto.UserLogin) (string, error, uint) {
+	if data.Username == "" || data.Password == "" {
+		return "", fmt.Errorf("username and password are required"), status.BadRequest
+	}
+
+	user, err := s.repo.FindByUsername(data.Username)
+	if err != nil {
+		return "", fmt.Errorf("user not found: %w", err), status.NotFound
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(data.Password))
+	if err != nil {
+		return "", fmt.Errorf("password match error: %w", err), status.BadRequest
+	}
+
+	return "", nil, 12
 }
