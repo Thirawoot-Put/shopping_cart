@@ -1,7 +1,7 @@
 services:
-  
   db:
     container_name: shopping_cart_user_db
+    hostname: shopping_cart_user_db
     image: postgres
     restart: always
     environment: 
